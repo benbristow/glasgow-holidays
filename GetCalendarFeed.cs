@@ -22,7 +22,7 @@ public static class GetCalendarFeed
 {
     [FunctionName(nameof(GetCalendarFeed))]
     public static async Task<IActionResult> RunAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var doc = await GetHtmlDocument("https://www.glasgow.gov.uk/article/3741/Public-General-Holidays");
