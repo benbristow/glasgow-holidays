@@ -20,7 +20,7 @@ namespace GlasgowHolidays;
 
 public static class GetCalendarFeed
 {
-    [FunctionName("GetCalendarFeed")]
+    [FunctionName(nameof(GetCalendarFeed))]
     public static async Task<IActionResult> RunAsync(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)]
         HttpRequest req, ILogger log)
