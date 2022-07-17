@@ -57,7 +57,7 @@ public static class RefreshCalendarFeed
                     return new CalendarEvent
                     {
                         Summary = HtmlEntity.DeEntitize(row.QuerySelector("td:nth-child(1) td").InnerText),
-                        // Move days of the week that land on a weekday to the next weekday
+                        // Move days of the week that land on a weekend to the next weekday
                         Start = new CalDateTime(dateTime.DayOfWeek switch
                         {
                             DayOfWeek.Saturday => dateTime.AddDays(2),
