@@ -48,16 +48,27 @@ public static class RefreshCalendarFeed
                 var datesColumnPTags = datesColumn.QuerySelectorAll("p");
                 var dateNodes = datesColumnPTags.Any() ? datesColumnPTags : new[] { datesColumn };
 
-                return dateNodes.Select(dateTextNode => new CalendarEvent
+                return dateNodes.Select(dateTextNode =>
                 {
-                    Summary = HtmlEntity.DeEntitize(row.QuerySelector("td:nth-child(1) td").InnerText),
-                    Start = new CalDateTime(DateTime.Parse(
+                    var dateTime = DateTime.Parse(
                         HtmlEntity.DeEntitize(dateTextNode.InnerText),
-                        System.Globalization.CultureInfo.InvariantCulture)),
-                    IsAllDay = true
+                        System.Globalization.CultureInfo.InvariantCulture);
+
+                    return new CalendarEvent
+                    {
+                        Summary = HtmlEntity.DeEntitize(row.QuerySelector("td:nth-child(1) td").InnerText),
+                        // Move days of the week that land on a weekday to the next weekday
+                        Start = new CalDateTime(dateTime.DayOfWeek switch
+                        {
+                            DayOfWeek.Saturday => dateTime.AddDays(2),
+                            DayOfWeek.Sunday => dateTime.AddDays(3),
+                            _ => dateTime
+                        }),
+                        IsAllDay = true
+                    };
                 });
             }));
-        
+
         return calendar;
     }
 
