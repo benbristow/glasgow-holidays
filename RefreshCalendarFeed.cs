@@ -25,7 +25,7 @@ public static class RefreshCalendarFeed
             )] TimerInfo timerInfo)
     {
         var doc = await GetHtmlDocumentAsync("https://www.glasgow.gov.uk/article/3741/Public-General-Holidays");
-        var calendar = GetCalendar(doc);
+        var calendar = ParseCalendarFromDocument(doc);
         await UpdateBlobStorageAsync(calendar);
     }
 
@@ -38,7 +38,7 @@ public static class RefreshCalendarFeed
         return document;
     }
 
-    private static Calendar GetCalendar(HtmlDocument doc)
+    private static Calendar ParseCalendarFromDocument(HtmlDocument doc)
     {
         var calendar = new Calendar();
         calendar.Events.AddRange(doc.QuerySelectorAll("table[summary=holidays] tr")
